@@ -1,0 +1,191 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+namespace co.edu.eafit.mvmblockchain
+
+
+//////////// Activos ////////////
+
+asset ActivoDeclaracionLinea identified by idDeclaracionLinea {
+  o String idDeclaracionLinea
+  o DeclaracionLinea declaracionLinea
+} 
+
+asset ActivoDeclaracionTransformador identified by idDeclaracionTransformador {
+  o String idDeclaracionTransformador
+  o DeclaracionTransformador declaracionTransformador
+}
+
+asset ActivoDeclaracionCondensador identified by idDeclaracionCondensador {
+  o String idDeclaracionCondensador
+  o DeclaracionCondensador declaracionCondensador
+}
+
+asset ActivoDeclaracionReactor identified by idDeclaracionReactor {
+  o String idDeclaracionReactor
+  o DeclaracionReactor declaracionReactor
+}
+
+
+//////////// Conceptos ////////////
+
+// Elementos
+
+concept Barra {
+  o String subestacion
+  o Integer nivelTension
+  o String nombrePuntoConexion
+}
+
+concept Secuencia {
+  o Integer resistencia    // W/km
+  o Integer reactancia     // W/km
+  o Integer susceptancia   // uS/km
+}
+
+concept Devanado {
+  o Integer tensionNominal        // kV
+  o Integer capacidadNominal      // MVA
+  o Integer capacidadEmergencia   // MVA
+  o Integer resistencia           // %
+  o Integer resistenciaTierra     // %
+  o Integer reactancia            // %
+  o Integer reactanciaTierra      // %
+}
+
+// Informacion general
+
+concept Linea {
+  o String nombre
+  o Barra barraInicial
+  o Barra barraFinal
+}
+
+concept Transformador {
+  o String nombre
+  o Barra barraAltaTension
+  o Barra barraMediaTension
+  o Barra barraBajaTension
+}
+
+concept Condensador {
+  o String nombre
+  o Barra barra
+}
+
+concept Reactor {
+  o String nombre
+  o Barra barra
+}
+
+// Declaraciones
+
+concept DeclaracionLinea {
+  o Linea linea                   // 1, 2, 3
+  o Integer tensionNominal        // 4 - kV
+  o Integer longitud              // 5 - km
+  o Integer capacidadNominal      // 6 - A
+  o String elementoLimite         // 7
+  o Integer limiteEmergencia      // 8 - A
+  o Secuencia secuenciaPositiva   // 9, 10, 11
+  o Secuencia secuenciaCero       // 12, 13, 14
+  o Boolean comparte              // 15
+  o Linea[] lineasComparte
+  --> AgenteMEM agente
+}
+
+concept DeclaracionTransformador {
+  o Transformador transformador           // 1, 2, 3, 4
+  o Integer impedanciaAltaBajaNominal     // 5 - %
+  o Integer impedanciaAltaMediaNominal    // 6 - %
+  o Integer impedanciaMediaBajaNominal    // 7 - %
+  o String grupoDeConexion                // 8
+  o Devanado devanadoAltaTension          // 9, 10, 11, 12, 13, 14, 15
+  o Devanado devanadoMediaTension         // 16, 17, 18, 19, 20, 21, 22
+  o Devanado devanadoBajaTension          // 23, 24, 25, 26, 27, 28, 29
+  o String ladoTap                        // 30
+  o Integer pasoMaximo                    // 31
+  o Integer pasoMinimo                    // 32
+  o Integer pasoNominal                   // 33
+  o Integer tensionTapNominal             // 34 - kV
+  o Integer pasoTap                       // 35 - %
+  o Integer zccMax                        // 36 - %
+  o Integer zccMin                        // 37 - %
+  --> AgenteMEM agente
+}
+
+concept DeclaracionCondensador {
+  o Condensador condensador    // 1, 2
+  o Integer capacidadNominal   // 3 - MVAR
+  o Integer tensionNominal     // 4 - kV
+  o String conexion            // 5
+  o String modoConexion        // 6
+  --> AgenteMEM agente
+}
+
+concept DeclaracionReactor {
+  o Reactor reactor // 1, 2
+  o Integer capacidadNominal   // 3 - MVAR
+  o Integer tensionNominal     // 4 - kV
+  o String conexion            // 5
+  o String modoConexion        // 6
+  --> AgenteMEM agente
+}
+
+
+//////////// Participantes ////////////
+
+participant EntidadReguladora identified by idEntidadReguladora {
+  o String idEntidadReguladora
+  o String nombre
+}
+
+abstract participant AgenteMEM identified by idAgenteMEM {
+  o String idAgenteMEM
+  o String nombreEmpresa
+  o String direccionEmpresa
+  o String telefonoEmpresa
+  o String faxEmpresa
+  o String emailEmpresa
+  o String nombreEmpleado
+  o String cargoEmpleado
+  o DateTime fechaEnvio
+}
+
+participant Comercializador extends AgenteMEM {}
+
+participant Generador extends AgenteMEM {}
+
+
+//////////// Transacciones ////////////
+
+transaction PublicarDeclaracionLinea {
+  o String idDeclaracionLinea
+  o DeclaracionLinea declaracionLinea
+}
+
+transaction PublicarDeclaracionTransformador {
+  o String idDeclaracionTransformador
+  o DeclaracionLinea declaracionTransformador
+}
+
+transaction PublicarDeclaracionCondensador {
+  o String idDeclaracionCondensador
+  o DeclaracionLinea declaracionCondensador
+}
+
+transaction PublicarDeclaracionReactor {
+  o String idDeclaracionReactor
+  o DeclaracionLinea declaracionReactor
+}
