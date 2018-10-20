@@ -1,9 +1,9 @@
-
 version: 2
 jobs:
    build:
-      steps:
-         - run: echo holi 
+      machine:
+         steps:
+            - run: echo holi 
 deployment:
    dev:
       branch: master
