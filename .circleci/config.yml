@@ -1,8 +1,7 @@
 
 version: 2
-jobs:
-   deployment:
-      dev:
-        branch: master
-           commands:
-             - ssh user1@10.131.137.223 'cd mvm-blockchain && git pull origin master'
+deployment:
+   dev:
+      branch: master
+      commands:
+         - ssh user1@10.131.137.223 'cd mvm-blockchain && git pull origin master'
