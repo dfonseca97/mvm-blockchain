@@ -1,6 +1,7 @@
 # MVMBlockchain
 
-Stores information about technical parameters regarding electricity generation elements using blockchain.
+
+.Stores information about technical parameters regarding electricity generation elements using blockchain.
 
 ## Deployment
 
